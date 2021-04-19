@@ -1,3 +1,4 @@
+
 # Introducción a Docker
 
 
@@ -11,13 +12,17 @@ Este es un flujo de instalación de software tradicional en cualquier computador
     
 -   En algún momento inevitablemente tuvimos un mensaje de error durante la instalación.
     
--   Entonces buscamos soluciones en internet.
+-   Entonces buscamos soluciones en Internet.
     
 -   Ejecutamos nuevamente el instalador.
     
 -   y un nuevo error aparece.
     
-Esto es lo que Docker intenta corregir. Docker quiere que sea realmente fácil y sencillo instalar y ejecutar software en cualquier equipo, en cualquier plataforma.
+Los inconvenientes son evidentes. El usuario debe buscar y descargar primero el instalador y, la **mayoría** de las veces, a la máquina de destino le **faltarían las dependencias necesarias** para que el software se ejecute según lo previsto.
+
+Esto es lo que Docker intenta corregir. 
+
+Docker quiere que sea realmente fácil y sencillo instalar y ejecutar software en cualquier equipo, en cualquier plataforma.
 
 ## El Problema 2
 
@@ -31,7 +36,9 @@ Surgen muchos problemas al desarrollar esta aplicación con todos estos componen
     
 -   **La arquitectura de nuestra aplicación cambia todo el tiempo**, surgen nuevas versiones de componentes, cambios en la bd, etc y cada vez que esto sucede debemos la verificar la compatibilidad entre estos componentes y la infraestructura.
     
--   Este problema que forma esta matriz de compatibilidad es conocida como **matrix from hell**. Es es palabras simples, el desafío de empaquetar cualquier aplicación, independientemente del lenguaje/frameworks/dependencias, para que pueda ejecutarse sobre cualquier plataforma, independiente del sistema operativo/hardware/infraestructura.
+-   Este problema que forma esta matriz de compatibilidad es conocida como **matrix from hell**. 
+
+Es es palabras simples, el desafío de empaquetar cualquier aplicación, independientemente del lenguaje/frameworks/dependencias, para que pueda ejecutarse sobre cualquier plataforma, independiente del sistema operativo/hardware/infraestructura.
 
 Idealmente nos gustaría tener un método que replicase **un completo y complejo sistema** con una variedad de plataformas hardware y entornos con la posibilidad de actualizar componentes en lugar del sistema completo para cada cambio.
 
@@ -41,7 +48,7 @@ Los contenedores son una **solución al problema de cómo hacer que el software 
 
 Esto podría ser **desde una equipo de un desarrollador a un entorno de prueba,** desde un entorno de prueba a producción, y quizás desde una máquina física en un centro de datos a una máquina virtual en una nube pública o privada.
 
-La matriz del infierno se convierte en matriz de contenedores. Docker nos ayuda a “**empaquetar**” cada componente de software como una imagen de contenedor estandarizada y ejecutarlo con un alto grado de portabilidad de una manera repetible y confiable.
+La matriz del infierno se convierte en matriz de contenedores. Docker nos ayuda a “**empaquetar**” cada componente de software como una imagen de contenedor estandarizada y ejecutarlo con un alto grado de **portabilidad** de una manera **repetible** y **confiable**.
 
 ## ¿Qué es Docker?
 
@@ -49,7 +56,7 @@ Docker es un proyecto de código abierto que permite **automatizar el despliegue
 
 Nos permite desarrollar, implementar y ejecutar aplicaciones dentro de contenedores ligeros y portables para que las aplicaciones de software puedan ejecutarse en cualquier máquina con Docker instalado, en resumen es una tecnología para desplegar aplicaciones y aunque los contenedores no son nuevos, su uso para implementar aplicaciones fácilmente sí lo es.
 
-Con **Docker,** reduces el tiempo de instalación y configuración en los despliegues, subsanas los errores de compatibilidad y múltiples versiones de los sistemas, disminuyes los tiempos de despliegue de aplicaciones.
+Con **Docker,** reduces el tiempo de **instalación y configuración** en los despliegues, subsanas los errores de **compatibilidad y múltiples versiones** de los sistemas, disminuyes los **tiempos de despliegue** de aplicaciones.
 
 ## ¿Qué es un contenedor?
 
@@ -89,7 +96,7 @@ Es la **abstracción de los recursos de un servidor** de forma que se **crea una
 
 ### Máquinas Virtuales (VM).
 
-La virtualización convencional con VM se apoya en el llamado Hypervisor, también llamado monitor de máquina virtual, que distribuye de forma proporcional el hardware del sistema de Host entre los sistemas operativos Guest.
+La virtualización convencional con VM se apoya en el llamado Hypervisor, también llamado monitor de máquina virtual, que **distribuye** de forma proporcional el hardware del sistema de Host (**anfitrion**) entre los sistemas operativos Guest (**invitado**).
 
 Cada VM es cargada con un sistema operativo completo, cuyo tamaño puede alcanzar varios GB.
 
@@ -121,7 +128,7 @@ El hecho de que el cliente se comunique con el servidor mediante el API hace que
 
 **Docker Daemon** es un servicio en segundo plano de Linux que se ejecuta en la máquina host de Docker y administra el ciclo de vida de los contenedores de Docker (creación, ejecución, eliminación, etc.). En terminología de Linux, el demonio es un proceso que se ejecuta en el sistema operativo generalmente como un servicio.
 
-**Docker Client** es la interfaz de línea de comandos (CLI)  y facilita la comunicación entre el usuario y el demonio de Docker mediante llamadas a la API REST. Docker CLI no es el único cliente, hay muchas implementaciones de UI como Portainer of Kinematic.
+**Docker Client** es la interfaz de línea de comandos (CLI)  y facilita la comunicación entre el usuario y el demonio de Docker mediante llamadas a la API REST. Docker CLI no es el único cliente, hay muchas implementaciones de UI como Kitematic o Portainer.
 
 Otras aplicaciones en Docker pueden comunicarse directamente con el API REST. Con ésto tenemos todo lo necesario para manejar elementos de Docker como imágenes, contenedores, networks y volúmenes.
 
@@ -135,19 +142,19 @@ El **Docker Registry** es el lugar donde se almacenan las imágenes de que cream
 
 Las imágenes son otro componente fundamental de Docker y sin ellas los contenedores no tendrían sentido.
 
-Estas imágenes son fundamentalmente **plantillas** o templates y son **son inmutables** con una fina capa de escritura, esta característica es una de las características más atractivas de las cargas de trabajo en contenedores.
+Estas imágenes son fundamentalmente **plantillas** o templates. Una vez que se crea una imagen, esta es **inmutable**. 
 
 Cada archivo de imagen de Docker **se compone de una serie de capas**. Estas capas se combinan en una sola imagen. Una capa se crea cuando la imagen cambia.
 
-Algo que debemos tener en cuenta es que las imágenes no van a cambiar, es decir, una vez esté creada, no la podremos cambiar.
-
 ### Contenedores
+
+Un contenedor es una entidad lógica, una **agrupación de procesos que se ejecutan de forma nativa** como cualquier otra aplicación en la máquina host. Los procesos no tienen acceso a nada que se encuentre fuera del contenedor, y no sólo eso, no tienen forma de consumir más recursos que los que el contenedor les permite.
 
 Los contenedores se crean a partir de imágenes y representan la instancia real de una aplicación / servicio / etc. Si viene con experiencia en programación OOP, puede pensar en los contenedores como instancias de clases e imágenes como clases en sí mismas.
 
 ## Capas
 
-Cada archivo de imagen de Docker **se compone de una serie de capas**. Estas capas se combinan en una sola imagen. Una capa se crea cuando la imagen cambia. Cada vez que un usuario especifica un comando, como ejecutar o copiar, se crea una nueva capa.
+Cada archivo de imagen de Docker **se compone de una serie de capas** cada una con id único. Cada capa agrega cambios incrementales que son guardados sobre las capas existentes. Cada vez que un usuario especifica un comando, como ejecutar o copiar, se crea una nueva capa.
 
 -   Una imagen es construida a partir de múltiples capas, donde en el nivel más bajo tenemos la capa base correspondiente al SO.
     
@@ -247,3 +254,16 @@ Ciclo de vida básico:
 **docker inspect**: Retorna todos los detalles de un contenedor, información de bajo nivel, en formato JSON.
 
 **docker push**: Publica la imagen en un registry. Antes de subir la imagen debemos etiquetarla. Al hacer push las capas que ya están subidas no se vuelven a subir. Todos los registry siguen una nomenclatura a la hora de almacenar los repositorios. En el caso de Docker Hub necesitamos que nuestra imagen se llame nombre_de_usuario/nombre_del_repositorio:etiqueta.
+
+## Ejemplo Práctico
+
+    docker run --name my-nginx -d nginx
+    docker ps
+    docker exec -it my-nginx sh
+    curl localhost:80
+    docker run --name my-nginx-2 -p 8080:80 -d nginx
+    curl localhost:8080
+    docker stop my-nginx my-nginx-2
+    docker rm my-nginx my-nginx-2
+    docker rmi nginx
+    
