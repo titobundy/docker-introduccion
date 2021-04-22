@@ -36,9 +36,9 @@ Surgen muchos problemas al desarrollar esta aplicación con todos estos componen
     
 -   **La arquitectura de nuestra aplicación cambia todo el tiempo**, surgen nuevas versiones de componentes, cambios en la bd, etc y cada vez que esto sucede debemos la verificar la compatibilidad entre estos componentes y la infraestructura.
     
--   Este problema que forma esta matriz de compatibilidad es conocida como **matrix from hell**. 
+-   Estas relaciones forman una matriz de compatibilidad, y el problema que provoca es conocida como **matrix from hell**. 
 
-Es es palabras simples, el desafío de empaquetar cualquier aplicación, independientemente del lenguaje/frameworks/dependencias, para que pueda ejecutarse sobre cualquier plataforma, independiente del sistema operativo/hardware/infraestructura.
+En palabras simples, es el desafío de empaquetar cualquier aplicación, independientemente del lenguaje/frameworks/dependencias, para que pueda ejecutarse sobre cualquier plataforma, independiente del sistema operativo/hardware/infraestructura.
 
 Idealmente nos gustaría tener un método que replicase **un completo y complejo sistema** con una variedad de plataformas hardware y entornos con la posibilidad de actualizar componentes en lugar del sistema completo para cada cambio.
 
@@ -60,7 +60,7 @@ Con **Docker,** reduces el tiempo de **instalación y configuración** en los de
 
 ## ¿Qué es un contenedor?
 
-El objetivo de Docker es permitirte **la creación paquetes estándar** pensados para despliegue llamados "**contenedores**" que incluyen **todo lo necesario para que una aplicación funcione** (dependencias, servicios...) y que se aíslan del sistema subyacente para lograr que siempre funcionen exactamente igual.
+El objetivo de Docker es permitirte **la creación paquetes estándar** pensados para despliegue llamados "**contenedores**" que incluyen **todo lo necesario para que una aplicación funcione** (dependencias, servicios...) y que se aíslan del sistema subyacente (Host) para lograr que siempre funcionen exactamente igual.
 
 Los contenedores son muy útiles para mejorar la seguridad, la reproducibilidad y la escalabilidad en el desarrollo de software y la ciencia de datos. Su auge es una de las tendencias tecnológicas más importantes de la actualidad.
 
@@ -92,11 +92,13 @@ Con esto surge el concepto de Contenerizar (Dockerizar) aplicaciones.
 
 ### Virtualización
 
-Es la **abstracción de los recursos de un servidor** de forma que se **crea una capa** entre el hardware de la máquina física (host o hypervisor) y el sistema operativo de la maquina virtual (guest).
+Es la **abstracción de los recursos de un servidor** de forma que se **crea una capa entre el hardware** de la máquina física (host o hypervisor) y **el sistema operativo** de la maquina virtual (guest).
 
 ### Máquinas Virtuales (VM).
 
-La virtualización convencional con VM se apoya en el llamado Hypervisor, también llamado monitor de máquina virtual, que **distribuye** de forma proporcional el hardware del sistema de Host (**anfitrion**) entre los sistemas operativos Guest (**invitado**).
+La idea de una VM es la de **emular** un entorno como si fuera un servidor físico completo, y de esta forma proporcionar un entorno de ejecución independiente.
+
+La virtualización convencional con VM se apoya en una pieza de software llamado Hypervisor, que **distribuye** los recursos de hardware del sistema de Host (**anfitrion**) entre los sistemas operativos Guest (**invitado**).
 
 Cada VM es cargada con un sistema operativo completo, cuyo tamaño puede alcanzar varios GB.
 
@@ -110,13 +112,24 @@ La virtualización mediante contenedores, por el contrario, **no inicia ningún 
 
 Los contenedores **comparten el Kernel del SO** que es el responsable de interactuar con el hardware. El software sobre el Kernel de Linux hace que los SO sean diferentes (Ubuntu, Fedora, Debian, etc…)
 
+Se quita la capa del SO que tienen las VM, de esta forma los contenedores corren **solo nuestra aplicación** junto a las librerias/dependencias incluidas.
+
 Debido a que las diferentes distribuciones del SO Linux (Ubuntu, Fedora, Debian, etc) comparten el mismo Kernel, Docker es capaz de ejecutar sobre ellos contenedores con otras distribuciones de Linux.
 
-Los contenedores son pequeños en tamaño y uso de recursos, además inician más rápidos en comparación con las máquinas virtuales.
+Los contenedores son **pequeños** en tamaño y uso de recursos, además inician más **rápidos** en comparación con las máquinas virtuales.
+
+Distinguimos 2 tipos de contenedores:
+
+ - Basados en el kernel de Linux (solo pueden correr en un servidor (Host) Linux)
+ - Basados en el kernel de Windows (solo puede correr en un servidor (Host) Windows)
+
+**¿ Como ejecutamos contenedores linux en Windows/Mac ?**
+
+En este caso el Docker Desktop con el que se instala Docker en Windows y Mac, Docker funciona utilizando una pequeña maquina virtual.
 
 En el caso de contenedores basados en el kernel de Windows, estos solo funcionan con las versiones de Windows 10 y Windows Server 2016, siendo bastantes más pesados con respecto a los basados en Linux.
 
-Por otra parte en Windows y Mac, Docker funciona utilizando una pequeña maquina virtual.
+
 
 ## Arquitectura
 
@@ -140,9 +153,9 @@ El **Docker Registry** es el lugar donde se almacenan las imágenes de que cream
 
 ### Imágenes
 
-Las imágenes son otro componente fundamental de Docker y sin ellas los contenedores no tendrían sentido.
+Una imagen de Docker es un archivo o **plantilla** de solo-lectura, **inmutable** (una vez que se crea no cambia), que contiene el código fuente, librerías, dependencias y todo lo necesario para que se ejecute una aplicación. 
 
-Estas imágenes son fundamentalmente **plantillas** o templates. Una vez que se crea una imagen, esta es **inmutable**. 
+Debido a su calidad de solo-lectura, estas imágenes son denominadas **snapshots**.
 
 Cada archivo de imagen de Docker **se compone de una serie de capas**. Estas capas se combinan en una sola imagen. Una capa se crea cuando la imagen cambia.
 
@@ -267,3 +280,24 @@ Ciclo de vida básico:
     docker rm my-nginx my-nginx-2
     docker rmi nginx
     
+Dockerfile
+
+```
+FROM nginx
+COPY static-html-directory /usr/share/nginx/html
+```
+
+```
+echo "<html>hola mundo</html>" > index.html
+
+echo "FROM nginx
+COPY . /usr/share/nginx/html" > Dockerfile
+```
+
+```
+docker build . -t my-nginx-image
+docker run --name my-nginx-container -p 8080:80 -d my-nginx-image
+docker stop my-nginx-container
+docker rm my-nginx-container
+docker rmi my-nginx-image
+```
